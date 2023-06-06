@@ -1,4 +1,4 @@
-package br.edu.ifsp.ads.sharedlist
+package br.edu.ifsp.ads.sharedlist.view
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
