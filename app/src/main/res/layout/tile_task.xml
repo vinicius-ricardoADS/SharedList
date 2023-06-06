@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="10dp" >
+
+    <TextView
+        android:id="@+id/titleTv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/title"
+        android:textSize="25sp" />
+
+    <TextView
+        android:id="@+id/userTv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/user" />
+
+    <TextView
+        android:id="@+id/descriptionTv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/description" />
+
+    <TextView
+        android:id="@+id/dateCreatedTv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/date_created" />
+
+    <TextView
+        android:id="@+id/datePreviewTv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/date_preview" />
+
+
+
+</LinearLayout>
