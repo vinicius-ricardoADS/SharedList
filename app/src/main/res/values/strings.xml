@@ -6,4 +6,5 @@
     <string name="date_created">Date Created</string>
     <string name="date_preview">Date Preview</string>
     <string name="logout">Logout</string>
+    <string name="add_task">Add Task</string>
 </resources>
