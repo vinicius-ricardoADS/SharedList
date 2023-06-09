@@ -10,6 +10,8 @@ import kotlinx.parcelize.Parcelize
 @Entity
 data class Task(
     @PrimaryKey (autoGenerate = false)
+    val id: Int?,
+    @NonNull
     val title: String,
     @NonNull
     val userWhoCreated: String,
