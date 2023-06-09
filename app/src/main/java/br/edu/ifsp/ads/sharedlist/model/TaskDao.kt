@@ -7,7 +7,7 @@ interface TaskDao {
     @Insert
     fun createTask (task: Task)
 
-    @Query("SELECT * FROM Member")
+    @Query("SELECT * FROM Task")
     fun retrieveTasks (): MutableList<Task>
 
     @Update

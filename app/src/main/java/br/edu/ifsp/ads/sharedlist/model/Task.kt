@@ -9,7 +9,7 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 @Entity
 data class Task(
-    @PrimaryKey (autoGenerate = false)
+    @PrimaryKey (autoGenerate = true)
     val id: Int?,
     @NonNull
     val title: String,
