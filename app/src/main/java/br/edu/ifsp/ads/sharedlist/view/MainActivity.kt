@@ -6,6 +6,7 @@ import android.view.Menu
 import android.view.MenuItem
 import br.edu.ifsp.ads.sharedlist.R
 import br.edu.ifsp.ads.sharedlist.databinding.ActivityMainBinding
+import com.google.firebase.auth.FirebaseAuth
 
 class MainActivity : BasicActivity() {
 
@@ -26,6 +27,9 @@ class MainActivity : BasicActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.logout -> {
+                FirebaseAuth.getInstance().signOut()
+                googleSignInClient.signOut()
+                finish()
                 true
             }
             else -> false
