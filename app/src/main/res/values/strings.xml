@@ -7,4 +7,12 @@
     <string name="date_preview">Date Preview</string>
     <string name="logout">Logout</string>
     <string name="add_task">Add Task</string>
+    <string name="title_register">Title</string>
+    <string name="user_register">User</string>
+    <string name="description_register">Description</string>
+    <string name="date_created_register">Date Created</string>
+    <string name="btn_save">Save</string>
+    <string name="edit_task">Edit Task</string>
+    <string name="remove_task">Remove Task</string>
+    <string name="detail_task">Detail Task</string>
 </resources>
