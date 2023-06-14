@@ -6,7 +6,7 @@ import android.widget.Toast
 import br.edu.ifsp.ads.sharedlist.databinding.ActivityCreateAccountBinding
 import com.google.firebase.auth.FirebaseAuth
 
-class CreateAccountActivity : AppCompatActivity() {
+class CreateAccountActivity : BasicActivity() {
 
     private val cmb: ActivityCreateAccountBinding by lazy {
         ActivityCreateAccountBinding.inflate(layoutInflater)

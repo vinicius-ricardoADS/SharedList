@@ -27,6 +27,10 @@ class LoginActivity : BasicActivity() {
             startActivity(Intent(this, CreateAccountActivity::class.java))
         }
 
+        alb.passwordResetBt.setOnClickListener {
+            startActivity(Intent(this, ResetPasswordActivity::class.java))
+        }
+
         alb.loginBt.setOnClickListener {
             val email = alb.emailEt.text.toString()
             val password = alb.passwordEt.text.toString()

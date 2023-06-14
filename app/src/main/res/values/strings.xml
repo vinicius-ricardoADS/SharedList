@@ -19,4 +19,6 @@
     <string name="senha">Senha</string>
     <string name="repetir_senha">Repetir senha</string>
     <string name="cadastrar">Cadastrar</string>
+    <string name="enviar_email">Enviar email</string>
+    <string name="email">Email</string>
 </resources>
