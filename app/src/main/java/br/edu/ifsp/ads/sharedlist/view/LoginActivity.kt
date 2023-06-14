@@ -23,6 +23,22 @@ class LoginActivity : BasicActivity() {
         super.onCreate(savedInstanceState)
         setContentView(alb.root)
 
+        alb.createAccountBt.setOnClickListener {
+            startActivity(Intent(this, CreateAccountActivity::class.java))
+        }
+
+        alb.loginBt.setOnClickListener {
+            val email = alb.emailEt.text.toString()
+            val password = alb.passwordEt.text.toString()
+
+            FirebaseAuth.getInstance().signInWithEmailAndPassword(email, password).addOnSuccessListener {
+                Toast.makeText(this, "Usuário $email autenticado com sucesso!", Toast.LENGTH_LONG).show()
+                openMainActivity()
+            }.addOnFailureListener {
+                Toast.makeText(this, "Falha na autenticação do usuário!", Toast.LENGTH_LONG).show()
+            }
+        }
+
         alb.loginGoogleBt.setOnClickListener{
             val gsa: GoogleSignInAccount? = GoogleSignIn.getLastSignedInAccount(this)
             if (gsa == null){

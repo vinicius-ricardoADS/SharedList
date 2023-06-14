@@ -15,4 +15,8 @@
     <string name="edit_task">Edit Task</string>
     <string name="remove_task">Remove Task</string>
     <string name="detail_task">Detail Task</string>
+    <string name="e_mail">E-mail</string>
+    <string name="senha">Senha</string>
+    <string name="repetir_senha">Repetir senha</string>
+    <string name="cadastrar">Cadastrar</string>
 </resources>
