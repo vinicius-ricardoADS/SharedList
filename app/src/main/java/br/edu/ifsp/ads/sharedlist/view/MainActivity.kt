@@ -12,6 +12,8 @@ import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import br.edu.ifsp.ads.sharedlist.R
+import br.edu.ifsp.ads.sharedlist.adapter.TaskAdapter
+import br.edu.ifsp.ads.sharedlist.controller.TaskController
 import br.edu.ifsp.ads.sharedlist.databinding.ActivityMainBinding
 import br.edu.ifsp.ads.sharedlist.model.Task
 import com.google.firebase.auth.FirebaseAuth
@@ -23,6 +25,18 @@ class MainActivity : BasicActivity() {
     }
 
     private lateinit var carl: ActivityResultLauncher<Intent>
+
+    // Data source
+    private val taskList: MutableList<Task> = mutableListOf()
+
+    // Adapter
+    private val taskAdapter: TaskAdapter by lazy {
+        TaskAdapter(this, taskList)
+    }
+
+    private val taskController: TaskController by lazy{
+        TaskController(this)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -80,5 +94,11 @@ class MainActivity : BasicActivity() {
             }
             else -> false
         }
+    }
+
+    fun updateTaskList(_contactList: MutableList<Task>){
+        taskList.clear()
+        taskList.addAll(_contactList)
+        taskAdapter.notifyDataSetChanged()
     }
 }
