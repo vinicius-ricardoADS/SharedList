@@ -20,5 +20,7 @@ data class Task(
     @NonNull
     val description: String,
     @NonNull
-    val datePreview: String
+    val datePreview: String,
+    @NonNull
+    val finished: Boolean,
 ): Parcelable
