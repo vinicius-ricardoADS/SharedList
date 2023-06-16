@@ -126,7 +126,7 @@ class MainActivity : BasicActivity() {
                 true
             }
             R.id.editTaskMi -> {
-                carl.launch(Intent(this, TaskActivity::class.java).putExtra(EXTRA_TASK, task))
+                carl.launch(Intent(this, TaskActivity::class.java).putExtra(EXTRA_TASK, task).putExtra(EXTRA_EDIT_TASK, true))
                 true
             }
             R.id.detailsTaskMi -> {

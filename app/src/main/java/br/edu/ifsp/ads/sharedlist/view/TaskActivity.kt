@@ -39,14 +39,59 @@ class TaskActivity : BasicActivity() {
                 }
             }
 
-            val viewMember = intent.getBooleanExtra(EXTRA_VIEW_TASK, false)
+            val viewTask = intent.getBooleanExtra(EXTRA_VIEW_TASK, false)
+            val editTask = intent.getBooleanExtra(EXTRA_EDIT_TASK, true)
+
             with (atmb) {
-                titleEt.isEnabled = !viewMember
-                userEt.isEnabled = !viewMember
-                descriptionEt.isEnabled = !viewMember
-                dateCreatedEt.isEnabled = !viewMember
-                datePreviewEt.isEnabled = !viewMember
-                saveBt.visibility = if (viewMember) View.GONE else View.VISIBLE
+                titleEt.isEnabled = !viewTask
+                userEt.isEnabled = !editTask
+                descriptionEt.isEnabled = !viewTask
+                dateCreatedEt.isEnabled = !editTask
+                datePreviewEt.isEnabled = !viewTask
+                saveBt.visibility = if (viewTask) View.GONE else View.VISIBLE
+                editBt.visibility = if (viewTask) View.GONE else View.VISIBLE
+            }
+
+            with (atmb) {
+                completeBt.setOnClickListener {
+                    with (_receivedTask) {
+                        val task: Task = Task(
+                            id = id, //operacao ternária (operador elvis)
+                            title = title,
+                            userWhoCreated = userWhoCreated,
+                            dateCreation = dateCreation,
+                            datePreview = datePreview,
+                            description = description,
+                            finished = true
+                        )
+
+                        val resultIntent = Intent()
+                        resultIntent.putExtra(EXTRA_TASK, task)
+                        setResult(RESULT_OK, resultIntent)
+                        finish()
+                    }
+                }
+            }
+
+            with (atmb) {
+                editBt.setOnClickListener {
+                    with (_receivedTask) {
+                        val task: Task = Task(
+                            id = id, //operacao ternária (operador elvis)
+                            title = title,
+                            userWhoCreated = userWhoCreated,
+                            dateCreation = dateCreation,
+                            datePreview = datePreview,
+                            description = description,
+                            finished = finished
+                        )
+
+                        val resultIntent = Intent()
+                        resultIntent.putExtra(EXTRA_TASK, task)
+                        setResult(RESULT_OK, resultIntent)
+                        finish()
+                    }
+                }
             }
         }
 
@@ -62,7 +107,7 @@ class TaskActivity : BasicActivity() {
 
             saveBt.setOnClickListener{
                 val task: Task = Task(
-                    id = receivedTask?.id, //operacao ternária (operador elvis)
+                    id = generateId(), //operacao ternária (operador elvis)
                     title = titleEt.text.toString(),
                     userWhoCreated = userEt.text.toString(),
                     dateCreation =  dateCreatedEt.text.toString(),
@@ -77,6 +122,11 @@ class TaskActivity : BasicActivity() {
                 finish()
             }
         }
+    }
+
+    private fun generateId(): Int {
+        val random = Random(System.currentTimeMillis())
+        return random.nextInt()
     }
 
 }
