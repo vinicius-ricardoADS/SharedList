@@ -22,7 +22,7 @@ class TaskDaoRbDbFb: TaskDao {
             override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
                 val task: Task? = snapshot.getValue<Task>()
                 task?.let{ _task ->
-                    if(!taskList.any{ _task.id == it.id}){
+                    if(!taskList.any{ _task.title == it.title}) {
                         taskList.add(task)
                     }
                 }
@@ -32,7 +32,7 @@ class TaskDaoRbDbFb: TaskDao {
             override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {
                 val task: Task? = snapshot.getValue<Task>()
                 task?.let{_task ->
-                    taskList[taskList.indexOfFirst{ _task.id == it.id }] = _task
+                    taskList[taskList.indexOfFirst{ _task.title == it.title }] = _task
                 }
             }
 
@@ -86,5 +86,5 @@ class TaskDaoRbDbFb: TaskDao {
         return 1
     }
 
-    private fun createOrUpdateTask (task: Task) = taskRtDbFbReference.child(task.id.toString()).setValue(task)
+    private fun createOrUpdateTask (task: Task) = taskRtDbFbReference.child(task.title.toString()).setValue(task)
 }

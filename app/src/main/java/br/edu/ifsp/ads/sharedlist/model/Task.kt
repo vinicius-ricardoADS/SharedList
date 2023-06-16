@@ -10,17 +10,17 @@ import kotlinx.parcelize.Parcelize
 @Entity
 data class Task(
     @PrimaryKey (autoGenerate = true)
-    val id: Int?,
+    val id: Int? = -1,
     @NonNull
-    val title: String,
+    val title: String = "",
     @NonNull
-    val userWhoCreated: String,
+    val userWhoCreated: String = "",
     @NonNull
-    val dateCreation: String,
+    val dateCreation: String = "",
     @NonNull
-    val description: String,
+    val description: String = "",
     @NonNull
-    val datePreview: String,
+    val datePreview: String = "",
     @NonNull
-    val finished: Boolean,
+    val finished: Boolean = false,
 ): Parcelable

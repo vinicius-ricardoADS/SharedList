@@ -71,11 +71,39 @@ class MainActivity : BasicActivity() {
             }
         }
 
+        registerForContextMenu(amb.listLv)
+
+        amb.listLv.onItemClickListener = AdapterView.OnItemClickListener { p0, p1, p2, p3 ->
+            val member = taskList[p2]
+            carl.launch(Intent(this@MainActivity, TaskActivity::class.java).putExtra(EXTRA_TASK, member).putExtra(EXTRA_VIEW_TASK, true))
+        }
+
         updateViewsHandler = Handler(Looper.myLooper()!!){ msg ->
             taskController.getTasks()
             true
         }
         updateViewsHandler.sendMessageDelayed(Message(), 3000)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_main, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.addTask -> {
+                carl.launch(Intent(this, TaskActivity::class.java))
+                true
+            }
+            R.id.logout -> {
+                FirebaseAuth.getInstance().signOut()
+                googleSignInClient.signOut()
+                finish()
+                true
+            }
+            else -> false
+        }
     }
 
     override fun onCreateContextMenu (
@@ -103,27 +131,6 @@ class MainActivity : BasicActivity() {
             }
             R.id.detailsTaskMi -> {
                 carl.launch(Intent(this, TaskActivity::class.java).putExtra(EXTRA_TASK, task).putExtra(EXTRA_VIEW_TASK, true))
-                true
-            }
-            else -> false
-        }
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.menu_main, menu)
-        return true
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            R.id.addTask -> {
-                carl.launch(Intent(this, TaskActivity::class.java))
-                true
-            }
-            R.id.logout -> {
-                FirebaseAuth.getInstance().signOut()
-                googleSignInClient.signOut()
-                finish()
                 true
             }
             else -> false
