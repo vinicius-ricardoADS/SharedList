@@ -1,5 +1,6 @@
 package br.edu.ifsp.ads.sharedlist.view
 
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.view.View
@@ -21,21 +22,22 @@ class TaskActivity : BasicActivity() {
         super.onCreate(savedInstanceState)
         setContentView(atmb.root)
 
-        val receivedMember = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+        val receivedTask = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             intent.getParcelableExtra(EXTRA_TASK, Task::class.java)
         } else {
             intent.getParcelableExtra(EXTRA_TASK)
         }
 
-        val currentDate = LocalDate.now()
-        val dateFormat = DateTimeFormatter.ofPattern("dd/MM/yyyy")
-        val formattedDate = currentDate.format(dateFormat)
-        val firebaseAuth = FirebaseAuth.getInstance()
-        val currentUser: FirebaseUser? = firebaseAuth.currentUser
-
-        with (atmb) {
-            if (currentUser != null) userEt.setText(currentUser.email)
-            dateCreatedEt.setText(formattedDate)
+        receivedTask?.let { _receivedTask ->
+            with (atmb) {
+                with (_receivedTask) {
+                    titleEt.setText(title)
+                    userEt.setText(userWhoCreated)
+                    descriptionEt.setText(description)
+                    dateCreatedEt.setText(dateCreation)
+                    datePreviewEt.setText(datePreview)
+                }
+            }
 
             val viewMember = intent.getBooleanExtra(EXTRA_VIEW_TASK, false)
             with (atmb) {
@@ -47,5 +49,34 @@ class TaskActivity : BasicActivity() {
                 saveBt.visibility = if (viewMember) View.GONE else View.VISIBLE
             }
         }
+
+        val currentDate = LocalDate.now()
+        val dateFormat = DateTimeFormatter.ofPattern("dd/MM/yyyy")
+        val formattedDate = currentDate.format(dateFormat)
+        val firebaseAuth = FirebaseAuth.getInstance()
+        val currentUser: FirebaseUser? = firebaseAuth.currentUser
+
+        with (atmb) {
+            userEt.setText(currentUser?.email)
+            dateCreatedEt.setText(formattedDate)
+
+            saveBt.setOnClickListener{
+                val task: Task = Task(
+                    id = receivedTask?.id, //operacao ternária (operador elvis)
+                    title = titleEt.text.toString(),
+                    userWhoCreated = userEt.text.toString(),
+                    dateCreation =  dateCreatedEt.text.toString(),
+                    datePreview = datePreviewEt.text.toString(),
+                    description = descriptionEt.text.toString(),
+                    finished = false
+                )
+
+                val resultIntent = Intent()
+                resultIntent.putExtra(EXTRA_TASK, task)
+                setResult(RESULT_OK, resultIntent)
+                finish()
+            }
+        }
     }
+
 }

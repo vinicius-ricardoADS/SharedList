@@ -1,8 +1,7 @@
 package br.edu.ifsp.ads.sharedlist.view
 
 import android.content.Intent
-import android.os.Build
-import android.os.Bundle
+import android.os.*
 import android.view.ContextMenu
 import android.view.Menu
 import android.view.MenuItem
@@ -38,9 +37,15 @@ class MainActivity : BasicActivity() {
         TaskController(this)
     }
 
+    lateinit var updateViewsHandler: Handler
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(amb.root)
+
+        amb.listLv.adapter = taskAdapter
+
+        taskController.getTasks()
 
         carl = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { it ->
             if (it?.resultCode == RESULT_OK) {
@@ -48,8 +53,29 @@ class MainActivity : BasicActivity() {
                     Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU -> it.data?.getParcelableExtra(EXTRA_TASK, Task::class.java)
                     else -> it.data?.getParcelableExtra<Task>(EXTRA_TASK)
                 }
+
+                task?.let { _task ->
+                    //if(contactList.any{it.id == _contact.id}){ //any retorna verdaeiro se pelo menos um elemento casa com o predicado (comparacao)
+                    val position = taskList.indexOfFirst { it.id == _task.id } //retorna o indice(index) caso o predicado seja satisfeito, ou seja, caso algum contato da minha lista tenha um id igual
+                    if (position != -1) {
+                        taskList[position] = _task
+                        taskController.editTask(_task)
+                        Toast.makeText(this, "Task editada!", Toast.LENGTH_LONG).show()
+                    } else {
+                        taskController.insertTask(_task)
+                        Toast.makeText(this, "Task adicionado!", Toast.LENGTH_LONG).show()
+                    }
+                    taskController.getTasks()
+                    taskAdapter.notifyDataSetChanged()
+                }
             }
         }
+
+        updateViewsHandler = Handler(Looper.myLooper()!!){ msg ->
+            taskController.getTasks()
+            true
+        }
+        updateViewsHandler.sendMessageDelayed(Message(), 3000)
     }
 
     override fun onCreateContextMenu (
@@ -61,14 +87,22 @@ class MainActivity : BasicActivity() {
     }
 
     override fun onContextItemSelected(item: MenuItem): Boolean {
+        val position = (item.menuInfo as AdapterView.AdapterContextMenuInfo).position
+        val task = taskList[position]
         return when (item.itemId) {
             R.id.removeTaskMi -> {
+                taskList.removeAt(position)
+                taskController.removeTask(task)
+                taskAdapter.notifyDataSetChanged()
+                Toast.makeText(this, "Task removida!", Toast.LENGTH_SHORT).show()
                 true
             }
             R.id.editTaskMi -> {
+                carl.launch(Intent(this, TaskActivity::class.java).putExtra(EXTRA_TASK, task))
                 true
             }
             R.id.detailsTaskMi -> {
+                carl.launch(Intent(this, TaskActivity::class.java).putExtra(EXTRA_TASK, task).putExtra(EXTRA_VIEW_TASK, true))
                 true
             }
             else -> false
