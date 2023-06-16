@@ -9,6 +9,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 sealed class BasicActivity: AppCompatActivity() {
     protected val EXTRA_TASK = "EXTRA_TASK"
     protected val EXTRA_EDIT_TASK = "EXTRA_EDIT_TASK"
+    protected val EXTRA_CREATE_TASK = "EXTRA_CREATE_TASK"
     protected val EXTRA_VIEW_TASK = "EXTRA_VIEW_TASK"
 
     protected val googleSignInOptions: GoogleSignInOptions by lazy {

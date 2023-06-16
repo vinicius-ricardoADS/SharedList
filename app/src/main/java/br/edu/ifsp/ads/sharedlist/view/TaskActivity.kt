@@ -102,8 +102,12 @@ class TaskActivity : BasicActivity() {
         val currentUser: FirebaseUser? = firebaseAuth.currentUser
 
         with (atmb) {
-            userEt.setText(currentUser?.email)
-            dateCreatedEt.setText(formattedDate)
+            val createTask = intent.getBooleanExtra(EXTRA_CREATE_TASK, false)
+            if (createTask) {
+                userEt.setText(currentUser?.email)
+                dateCreatedEt.setText(formattedDate)
+            }
+
 
             saveBt.setOnClickListener{
                 val task: Task = Task(

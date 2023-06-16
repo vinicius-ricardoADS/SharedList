@@ -93,7 +93,7 @@ class MainActivity : BasicActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.addTask -> {
-                carl.launch(Intent(this, TaskActivity::class.java))
+                carl.launch(Intent(this, TaskActivity::class.java).putExtra(EXTRA_CREATE_TASK, true))
                 true
             }
             R.id.logout -> {
