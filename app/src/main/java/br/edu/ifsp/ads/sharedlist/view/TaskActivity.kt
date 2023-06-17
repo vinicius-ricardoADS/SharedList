@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import br.edu.ifsp.ads.sharedlist.databinding.ActivityTaskBinding
 import br.edu.ifsp.ads.sharedlist.model.Task
 import com.google.firebase.auth.FirebaseAuth
@@ -28,6 +29,22 @@ class TaskActivity : BasicActivity() {
             intent.getParcelableExtra(EXTRA_TASK)
         }
 
+        val currentDate = LocalDate.now()
+        val dateFormat = DateTimeFormatter.ofPattern("dd/MM/yyyy")
+        val formattedDate = currentDate.format(dateFormat)
+        val firebaseAuth = FirebaseAuth.getInstance()
+        val currentUser: FirebaseUser? = firebaseAuth.currentUser
+
+        val viewTask = intent.getBooleanExtra(EXTRA_VIEW_TASK, false)
+        val editTask = intent.getBooleanExtra(EXTRA_EDIT_TASK, true)
+        val taskCompleted = intent.getBooleanExtra(EXTRA_DETAIL_TASK, false)
+
+        if (taskCompleted) {
+            atmb.userWhoFinishedEt.visibility = View.VISIBLE
+        } else {
+            atmb.userWhoFinishedEt.visibility = View.GONE
+        }
+
         receivedTask?.let { _receivedTask ->
             with (atmb) {
                 with (_receivedTask) {
@@ -36,11 +53,9 @@ class TaskActivity : BasicActivity() {
                     descriptionEt.setText(description)
                     dateCreatedEt.setText(dateCreation)
                     datePreviewEt.setText(datePreview)
+                    userWhoFinishedEt.setText(userWhoFinished)
                 }
             }
-
-            val viewTask = intent.getBooleanExtra(EXTRA_VIEW_TASK, false)
-            val editTask = intent.getBooleanExtra(EXTRA_EDIT_TASK, true)
 
             with (atmb) {
                 titleEt.isEnabled = !viewTask
@@ -48,6 +63,7 @@ class TaskActivity : BasicActivity() {
                 descriptionEt.isEnabled = !viewTask
                 dateCreatedEt.isEnabled = !editTask
                 datePreviewEt.isEnabled = !viewTask
+                userWhoFinishedEt.isEnabled = !viewTask
                 saveBt.visibility = if (viewTask) View.GONE else View.VISIBLE
                 editBt.visibility = if (viewTask) View.GONE else View.VISIBLE
             }
@@ -62,7 +78,8 @@ class TaskActivity : BasicActivity() {
                             dateCreation = dateCreation,
                             datePreview = datePreview,
                             description = description,
-                            finished = true
+                            finished = true,
+                            userWhoFinished = currentUser?.email.toString()
                         )
 
                         val resultIntent = Intent()
@@ -76,6 +93,8 @@ class TaskActivity : BasicActivity() {
             with (atmb) {
                 editBt.setOnClickListener {
                     with (_receivedTask) {
+                        if (_receivedTask.finished)
+                            Toast.makeText(this@TaskActivity, "Task não pode ser editada!", Toast.LENGTH_SHORT).show()
                         val task: Task = Task(
                             id = id, //operacao ternária (operador elvis)
                             title = titleEt.text.toString(),
@@ -83,7 +102,8 @@ class TaskActivity : BasicActivity() {
                             dateCreation = dateCreation,
                             datePreview = datePreviewEt.text.toString(),
                             description = descriptionEt.text.toString(),
-                            finished = finished
+                            finished = finished,
+                            userWhoFinished = ""
                         )
 
                         val resultIntent = Intent()
@@ -95,20 +115,12 @@ class TaskActivity : BasicActivity() {
             }
         }
 
-        val currentDate = LocalDate.now()
-        val dateFormat = DateTimeFormatter.ofPattern("dd/MM/yyyy")
-        val formattedDate = currentDate.format(dateFormat)
-        val firebaseAuth = FirebaseAuth.getInstance()
-        val currentUser: FirebaseUser? = firebaseAuth.currentUser
-
         with (atmb) {
             val createTask = intent.getBooleanExtra(EXTRA_CREATE_TASK, false)
             if (createTask) {
                 userEt.setText(currentUser?.email)
                 dateCreatedEt.setText(formattedDate)
             }
-
-
             saveBt.setOnClickListener{
                 val task: Task = Task(
                     id = generateId(), //operacao ternária (operador elvis)
@@ -117,7 +129,8 @@ class TaskActivity : BasicActivity() {
                     dateCreation =  dateCreatedEt.text.toString(),
                     datePreview = datePreviewEt.text.toString(),
                     description = descriptionEt.text.toString(),
-                    finished = false
+                    finished = false,
+                    userWhoFinished = ""
                 )
 
                 val resultIntent = Intent()

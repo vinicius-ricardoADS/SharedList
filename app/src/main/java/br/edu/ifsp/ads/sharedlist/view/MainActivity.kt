@@ -75,7 +75,7 @@ class MainActivity : BasicActivity() {
 
         amb.listLv.onItemClickListener = AdapterView.OnItemClickListener { p0, p1, p2, p3 ->
             val member = taskList[p2]
-            carl.launch(Intent(this@MainActivity, TaskActivity::class.java).putExtra(EXTRA_TASK, member).putExtra(EXTRA_VIEW_TASK, true))
+            carl.launch(Intent(this@MainActivity, TaskActivity::class.java).putExtra(EXTRA_TASK, member).putExtra(EXTRA_DETAIL_TASK, true).putExtra(EXTRA_VIEW_TASK, true))
         }
 
         updateViewsHandler = Handler(Looper.myLooper()!!){ msg ->
@@ -119,10 +119,13 @@ class MainActivity : BasicActivity() {
         val task = taskList[position]
         return when (item.itemId) {
             R.id.removeTaskMi -> {
-                taskList.removeAt(position)
-                taskController.removeTask(task)
-                taskAdapter.notifyDataSetChanged()
-                Toast.makeText(this, "Task removida!", Toast.LENGTH_SHORT).show()
+                if (!task.finished) {
+                    taskList.removeAt(position)
+                    taskController.removeTask(task)
+                    taskAdapter.notifyDataSetChanged()
+                    Toast.makeText(this, "Task removida!", Toast.LENGTH_SHORT).show()
+                }
+                Toast.makeText(this, "Task não pode ser removida!", Toast.LENGTH_SHORT).show()
                 true
             }
             R.id.editTaskMi -> {
@@ -130,7 +133,7 @@ class MainActivity : BasicActivity() {
                 true
             }
             R.id.detailsTaskMi -> {
-                carl.launch(Intent(this, TaskActivity::class.java).putExtra(EXTRA_TASK, task).putExtra(EXTRA_VIEW_TASK, true))
+                carl.launch(Intent(this, TaskActivity::class.java).putExtra(EXTRA_TASK, task).putExtra(EXTRA_DETAIL_TASK, true))
                 true
             }
             else -> false

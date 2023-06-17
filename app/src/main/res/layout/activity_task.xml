@@ -56,6 +56,27 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/dateCreatedEt" />
 
+    <TextView
+        android:id="@+id/userWhoFinishedTv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Who Finished"
+        android:gravity="center"
+        android:textSize="25dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/datePreviewEt"/>
+
+    <TextView
+        android:id="@+id/userWhoFinishedEt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textSize="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/userWhoFinishedTv" />
+
     <LinearLayout
         android:id="@+id/btnLl"
         android:layout_width="match_parent"
@@ -64,7 +85,7 @@
         android:gravity="center"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/datePreviewEt">
+        app:layout_constraintTop_toBottomOf="@+id/userWhoFinishedEt">
 
         <Button
             android:id="@+id/saveBt"

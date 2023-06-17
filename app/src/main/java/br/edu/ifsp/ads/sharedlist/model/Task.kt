@@ -16,6 +16,8 @@ data class Task(
     @NonNull
     val userWhoCreated: String = "",
     @NonNull
+    val userWhoFinished: String = "",
+    @NonNull
     val dateCreation: String = "",
     @NonNull
     val description: String = "",
