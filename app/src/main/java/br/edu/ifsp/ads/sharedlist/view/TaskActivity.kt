@@ -78,11 +78,11 @@ class TaskActivity : BasicActivity() {
                     with (_receivedTask) {
                         val task: Task = Task(
                             id = id, //operacao ternária (operador elvis)
-                            title = title,
+                            title = titleEt.text.toString(),
                             userWhoCreated = userWhoCreated,
                             dateCreation = dateCreation,
-                            datePreview = datePreview,
-                            description = description,
+                            datePreview = datePreviewEt.text.toString(),
+                            description = descriptionEt.text.toString(),
                             finished = finished
                         )
 
