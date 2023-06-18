@@ -1,5 +1,6 @@
 package br.edu.ifsp.ads.sharedlist.view
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
@@ -23,6 +24,15 @@ class LoginActivity : BasicActivity() {
         super.onCreate(savedInstanceState)
         setContentView(alb.root)
 
+        val sharedPreferences = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE)
+
+        val login_email = sharedPreferences.getString("email", "")
+
+        if (!login_email.isNullOrBlank()) {
+            alb.emailEt.setText(login_email)
+            sharedPreferences.edit().putString("email", login_email).apply()
+        }
+
         alb.createAccountBt.setOnClickListener {
             startActivity(Intent(this, CreateAccountActivity::class.java))
         }
@@ -37,6 +47,7 @@ class LoginActivity : BasicActivity() {
 
             FirebaseAuth.getInstance().signInWithEmailAndPassword(email, password).addOnSuccessListener {
                 Toast.makeText(this, "Usuário $email autenticado com sucesso!", Toast.LENGTH_LONG).show()
+                sharedPreferences.edit().putString("email", email).apply()
                 openMainActivity()
             }.addOnFailureListener {
                 Toast.makeText(this, "Falha na autenticação do usuário!", Toast.LENGTH_LONG).show()

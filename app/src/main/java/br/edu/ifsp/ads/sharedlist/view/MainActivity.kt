@@ -129,11 +129,14 @@ class MainActivity : BasicActivity() {
                 true
             }
             R.id.editTaskMi -> {
-                carl.launch(Intent(this, TaskActivity::class.java).putExtra(EXTRA_TASK, task).putExtra(EXTRA_EDIT_TASK, true))
+                if (!task.finished)
+                    carl.launch(Intent(this, TaskActivity::class.java).putExtra(EXTRA_TASK, task).putExtra(EXTRA_EDIT_TASK, true))
+                else
+                    Toast.makeText(this, "Task não pode ser editada!", Toast.LENGTH_SHORT).show()
                 true
             }
             R.id.detailsTaskMi -> {
-                carl.launch(Intent(this, TaskActivity::class.java).putExtra(EXTRA_TASK, task).putExtra(EXTRA_DETAIL_TASK, true))
+                carl.launch(Intent(this, TaskActivity::class.java).putExtra(EXTRA_TASK, task).putExtra(EXTRA_DETAIL_TASK, true).putExtra(EXTRA_VIEW_TASK, true))
                 true
             }
             else -> false

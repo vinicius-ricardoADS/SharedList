@@ -71,21 +71,30 @@ class TaskActivity : BasicActivity() {
             with (atmb) {
                 completeBt.setOnClickListener {
                     with (_receivedTask) {
-                        val task: Task = Task(
-                            id = id, //operacao ternária (operador elvis)
-                            title = title,
-                            userWhoCreated = userWhoCreated,
-                            dateCreation = dateCreation,
-                            datePreview = datePreview,
-                            description = description,
-                            finished = true,
-                            userWhoFinished = currentUser?.email.toString()
-                        )
+                        if (_receivedTask.finished) {
+                            Toast.makeText(
+                                this@TaskActivity,
+                                "Task já foi concluída!",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                            finish()
+                        } else {
+                            val task: Task = Task(
+                                id = id, //operacao ternária (operador elvis)
+                                title = title,
+                                userWhoCreated = userWhoCreated,
+                                dateCreation = dateCreation,
+                                datePreview = datePreview,
+                                description = description,
+                                finished = true,
+                                userWhoFinished = currentUser?.email.toString()
+                            )
 
-                        val resultIntent = Intent()
-                        resultIntent.putExtra(EXTRA_TASK, task)
-                        setResult(RESULT_OK, resultIntent)
-                        finish()
+                            val resultIntent = Intent()
+                            resultIntent.putExtra(EXTRA_TASK, task)
+                            setResult(RESULT_OK, resultIntent)
+                            finish()
+                        }
                     }
                 }
             }
@@ -93,8 +102,6 @@ class TaskActivity : BasicActivity() {
             with (atmb) {
                 editBt.setOnClickListener {
                     with (_receivedTask) {
-                        if (_receivedTask.finished)
-                            Toast.makeText(this@TaskActivity, "Task não pode ser editada!", Toast.LENGTH_SHORT).show()
                         val task: Task = Task(
                             id = id, //operacao ternária (operador elvis)
                             title = titleEt.text.toString(),
